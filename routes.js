@@ -1,6 +1,7 @@
 const passport = require('passport');
 const User = require('./models/User');
 const router = require('express').Router();
+const _ = require('lodash')
 
 router.get('/', function(req, res) {
   res.render('index', {user: req.user});
@@ -14,7 +15,10 @@ router.get('/register', function(req, res) {
 router.post('/register', function(req, res, next) {
   console.log('registering user');
   
-  User.register(new User({username: req.body.username}), req.body.password, function(err) {
+  let body = _.cloneDeep(req.body);
+  delete body.password;
+  
+  User.register(new User(body), req.body.password, function(err) {
     if (err) {
       console.log('error while user register!', err);
       return next(err);
@@ -59,7 +63,27 @@ router.get('/users', function(req, res) {
 });
 
 router.get('/users/:id', function(req,res) {
-  res.send(User.findById(req.param("id")));
+  User.findById(req.param("id"), function(err,user) {
+    res.send(user);
+  })
+  //res.send(req.param("id"));
 });
+
+router.post('/users/:id/update', function(req,res) {
+  let body = _.cloneDeep(req.body);
+  delete body.password;
+  delete body.username;
+  
+  User.findByIdAndUpdate(req.param("id"), body, function(err,data) {
+    if (err) {
+      console.log('error while update user!', err);
+      return next(err);
+    }
+    
+    res.send(data);  
+  });
+});
+
+
 
 module.exports = router;
