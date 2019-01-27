@@ -9,7 +9,7 @@ $ node .
 
 ---
 
-* [API Explorer ไว้สำหรับลองเล่น API, ใช้เป็น guildline ในการเขียนเชื่อมต่อ API ของ frontend](http://localhost:3000)
+* [API Explorer ไว้สำหรับลองเล่น API, ใช้เป็น guildline ในการเขียนเชื่อมต่อ API ของ frontend](http://localhost:3000/explorer)
 
 ---
 
