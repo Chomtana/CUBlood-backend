@@ -19,30 +19,30 @@
   },
   "AccessToken": {
     "dataSource": "mongoDs",
-    "public": false
+    "public": true
   },
   "ACL": {
     "dataSource": "mongoDs",
-    "public": false
+    "public": true
   },
   "RoleMapping": {
     "dataSource": "mongoDs",
-    "public": false
+    "public": true
   },
   "Role": {
     "dataSource": "mongoDs",
-    "public": false
+    "public": true
   },
   "CoffeeShop": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": false
   },
   "Review": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": false
   },
   "Reviewer": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": false
   }
 }

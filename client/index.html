@@ -4,44 +4,104 @@
     <meta charset="utf-8">
     <title>loopback-getting-started-intermediate</title>
     <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.22/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
-    <header>
-      <h1>Coffee shop reviews</h1>
-      <h2 ng-show="currentUser">Hello {{currentUser.email}}</h2>
-      <nav>
-        <ul>
-          <li>
-            <a ui-sref="all-reviews" ui-sref-active="active">All reviews</a>
-          </li>
-          <li ng-hide="currentUser">
-            <a ui-sref="sign-up" ui-sref-active="active">Sign up</a>
-          </li>
-          <li ng-show="currentUser">
-            <a ui-sref="my-reviews" ui-sref-active="active">My Reviews</a>
-          </li>
-          <li ng-show="currentUser">
-            <a ui-sref="add-review" ui-sref-active="active">Add Review</a>
-          </li>
-          <li ng-hide="currentUser">
-            <a ui-sref="login" ui-sref-active="active">Log in</a>
-          </li>
-          <li ng-show="currentUser">
-            <a ui-sref="logout" ui-sref-active="active">Log out</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <div id="vue-wrap">
+      <div v-if="user">
+        <h1>Current logged in user: {{user.username}}</h1>
+        <h2>Access Token: {{accessToken}}</h2>
+        <h2>User ID: {{userID}}</h2>
+        <h2>Email: {{user.email}}</h2>
+        <h2>User data:</h2>
+        <pre>
+          {{user}}
+        </pre>
+        <button type="button" @click="logout()">Logout</button>
+      </div>
+      <div v-else>
+        <h1>Not logged in</h1>
+        <form>
+          Username: <input type="text" v-model="formData.username"> <br>
+          Password: <input type="password" v-model="formData.password"> <br>
+          <input type="checkbox" v-model="formData.remember_me">Remember me <br> 
+          <button type="button" @click="login()">Login</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      var vm = new Vue({
+        el: "#vue-wrap",
+        data: {
+          user: null,
+          userID: null,
+          accessToken: null,
+          formData: {
+            username: "",
+            password: "",
+            remember_me: ""
+          }
+        },
+        mounted() {
+          var accessToken = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken") || null;
+          var userID = sessionStorage.getItem("userID") || localStorage.getItem("userID") || null;
+          if (accessToken && userID) {
+            this.userID = userID;
+            this.accessToken = accessToken;
+            this.getUserData(this.userID);
+          }
+        },
+        methods: {
+          getUserData: function (userID) {
+            axios.get('/api/Users/'+this.userID).then((res)=>{
+                Vue.set(this,"user",res.data);
+              }).catch(error=> {
+                console.log("Get user data error")
+                console.log(error);
+                alert("Get user data error");
+                alert(JSON.stringify(error.response));
+              });
+          },
+          login: function() {
+            axios.post('/api/Users/login',this.formData).then((res)=>{
+              this.accessToken = res.data.id;
+              this.userID = res.data.userId;
 
-    <main ui-view></main>
+              if (!this.formData.remember_me) {
+                sessionStorage.setItem("accessToken",this.accessToken)
+                sessionStorage.setItem("userID",this.userID)
+              } else {
+                localStorage.setItem("accessToken",this.accessToken)
+                localStorage.setItem("userID",this.userID)
+              }
 
-    <script src="vendor/angular.js"></script>
-    <script src="vendor/angular-resource.js"></script>
-    <script src="vendor/angular-ui-router.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/services/lb-services.js"></script>
-    <script src="js/controllers/auth.js"></script>
-    <script src="js/controllers/review.js"></script>
-    <script src="js/services/auth.js"></script>
+              this.getUserData(this.userID);
+            }).catch(error=> {
+              console.log("Login error")
+              console.log(error);
+              alert("Login error");
+              alert(JSON.stringify(error.response));
+            });
+          },
+          logout: function() {
+            axios.post('/api/Users/logout?access_token='+this.accessToken).then(res=> {
+              this.accessToken = null;
+              this.userID = null;
+              Vue.set(this,"user",null);
+
+              sessionStorage.removeItem("accessToken"); localStorage.removeItem("accessToken");
+              sessionStorage.removeItem("userID"); localStorage.removeItem("userID");
+
+            }).catch(error=> {
+              console.log("logout error")
+              console.log(error);
+              alert("logout error");
+              alert(JSON.stringify(error.response));
+            });
+          }
+        }
+      })
+    </script>
   </body>
 </html>
