@@ -21,7 +21,7 @@ $ node .
 แก้ code เกี่ยวกับ user model ใน
 * [Chomtana/cublood-loopback](https://github.com/Chomtana/cublood-loopback) -> common/models/user.json
 * [Chomtana/cublood-loopback](https://github.com/Chomtana/cublood-loopback) -> common/models/user.js
-* ** ไม่ใช่ repository นี้**
+* **ไม่ใช่ repository นี้**
 
 ---
 
