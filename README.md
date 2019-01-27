@@ -9,19 +9,19 @@ $ node .
 
 ---
 
-[API Explorer ไว้สำหรับลองเล่น API, ใช้เป็น guildline ในการเขียนเชื่อมต่อ API ของ frontend](http://localhost:3000)
+* [API Explorer ไว้สำหรับลองเล่น API, ใช้เป็น guildline ในการเขียนเชื่อมต่อ API ของ frontend](http://localhost:3000)
 
 ---
 
-[Built in model api](https://loopback.io/doc/en/lb2/Built-in-models-REST-API.html)
-[User authorization](https://loopback.io/doc/en/lb2/Introduction-to-User-model-authentication.html)
+* [Built in model api](https://loopback.io/doc/en/lb2/Built-in-models-REST-API.html)
+* [User authorization](https://loopback.io/doc/en/lb2/Introduction-to-User-model-authentication.html)
 
 ---
 
 แก้ code เกี่ยวกับ user model ใน
-[Chomtana/cublood-loopback](https://github.com/Chomtana/cublood-loopback) -> common/models/user.json
-[Chomtana/cublood-loopback](https://github.com/Chomtana/cublood-loopback) -> common/models/user.js
-** ไม่ใช่ repository นี้**
+* [Chomtana/cublood-loopback](https://github.com/Chomtana/cublood-loopback) -> common/models/user.json
+* [Chomtana/cublood-loopback](https://github.com/Chomtana/cublood-loopback) -> common/models/user.js
+* ** ไม่ใช่ repository นี้**
 
 ---
 
