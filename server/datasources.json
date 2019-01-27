@@ -1,0 +1,11 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "mongoDs": {
+    "connector": "loopback-connector-mongodb",
+    "useNewUrlParser": true,
+    "url": "mongodb://thinc:zaza5555!@cublood-shard-00-00-q1omy.mongodb.net:27017,cublood-shard-00-01-q1omy.mongodb.net:27017,cublood-shard-00-02-q1omy.mongodb.net:27017/test?ssl=true&replicaSet=CUBlood-shard-0&authSource=admin&retryWrites=true"
+  }
+}
