@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <title>loopback-getting-started-intermediate</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.22/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <div id="vue-wrap">
+      <div v-if="user">
+        <h1>Current logged in user: {{user.username}}</h1>
+        <h2>Access Token: {{accessToken}}</h2>
+        <h2>User ID: {{userID}}</h2>
+        <h2>Email: {{user.email}}</h2>
+        <h2>User data:</h2>
+        <pre>
+          {{user}}
+        </pre>
+        <button type="button" @click="logout()">Logout</button>
+      </div>
+      <div v-else>
+        <h1>Not logged in</h1>
+        <form>
+          Username: <input type="text" v-model="formData.username"> <br>
+          Password: <input type="password" v-model="formData.password"> <br>
+          <input type="checkbox" v-model="formData.remember_me">Remember me <br> 
+          <button type="button" @click="login()">Login</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      var vm = new Vue({
+        el: "#vue-wrap",
+        data: {
+          user: null,
+          userID: null,
+          accessToken: null,
+          formData: {
+            username: "",
+            password: "",
+            remember_me: ""
+          }
+        },
+        mounted() {
+          var accessToken = sessionStorage.getItem("accessToken") || localStorage.getItem("accessToken") || null;
+          var userID = sessionStorage.getItem("userID") || localStorage.getItem("userID") || null;
+          if (accessToken && userID) {
+            this.userID = userID;
+            this.accessToken = accessToken;
+            this.getUserData(this.userID);
+          }
+        },
+        methods: {
+          getUserData: function (userID) {
+            axios.get('/api/Users/'+this.userID+'?access_token='+this.accessToken).then((res)=>{
+                Vue.set(this,"user",res.data);
+              }).catch(error=> {
+                console.log("Get user data error")
+                console.log(error);
+                alert("Get user data error");
+                alert(JSON.stringify(error.response));
+              });
+          },
+          login: function() {
+            axios.post('/api/Users/login',this.formData).then((res)=>{
+              this.accessToken = res.data.id;
+              this.userID = res.data.userId;
+
+              if (!this.formData.remember_me) {
+                sessionStorage.setItem("accessToken",this.accessToken)
+                sessionStorage.setItem("userID",this.userID)
+              } else {
+                localStorage.setItem("accessToken",this.accessToken)
+                localStorage.setItem("userID",this.userID)
+              }
+
+              this.getUserData(this.userID);
+            }).catch(error=> {
+              console.log("Login error")
+              console.log(error);
+              alert("Login error");
+              alert(JSON.stringify(error.response));
+            });
+          },
+          logout: function() {
+            axios.post('/api/Users/logout?access_token='+this.accessToken).then(res=> {
+              this.accessToken = null;
+              this.userID = null;
+              Vue.set(this,"user",null);
+
+              sessionStorage.removeItem("accessToken"); localStorage.removeItem("accessToken");
+              sessionStorage.removeItem("userID"); localStorage.removeItem("userID");
+
+            }).catch(error=> {
+              console.log("logout error")
+              console.log(error);
+              alert("logout error");
+              alert(JSON.stringify(error.response));
+            });
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
