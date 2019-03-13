@@ -15,7 +15,18 @@
   },
   "User": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "upsert": false,
+          "prototype.updateAttributes": false,
+          "replaceOrCreate": false,
+          "replaceById": false,
+          "__prototype.updateAttributes__accessTokens": false       
+        }
+      }
+    }
   },
   "AccessToken": {
     "dataSource": "mongoDs",
