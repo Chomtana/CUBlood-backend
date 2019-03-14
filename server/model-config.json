@@ -15,23 +15,34 @@
   },
   "User": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "upsert": false,
+          "prototype.updateAttributes": false,
+          "replaceOrCreate": false,
+          "replaceById": false,
+          "__prototype.updateAttributes__accessTokens": false       
+        }
+      }
+    }
   },
   "AccessToken": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": false
   },
   "ACL": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": false
   },
   "RoleMapping": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": false
   },
   "Role": {
     "dataSource": "mongoDs",
-    "public": true
+    "public": false
   },
   "CoffeeShop": {
     "dataSource": "mongoDs",
