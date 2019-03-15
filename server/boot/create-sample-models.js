@@ -86,30 +86,34 @@ module.exports = function(app) {
   //create admin user
   //IMPORTANT: you need to delete thinc user and admin role in order to rerun
   function createAdmin() {
-    var User = app.models.User;
-    var Role = app.models.Role;
-    var RoleMapping = app.models.RoleMapping;
-    User.findOrCreate(
-      { username: 'thinc', email: 'thinc@cublood.org', password: 'thincandcublood', emailVerified: true },
-      function (err, user) {
-        
-        Role.findOrCreate({
-          name: 'admin'
-        }, function(err, role) {
-          //if (err) return console.log(err);
-          //console.log(role);
-    
-          // Make Bob an admin
-          role.principals.create({
-            principalType: RoleMapping.USER,
-            principalId: user.id
-          }, function(err, principal) {
+    mongoDs.automigrate('User', function(err) {
+      var User = app.models.User;
+      var Role = app.models.Role;
+      var RoleMapping = app.models.RoleMapping;
+      User.findOrCreate(
+        { username: 'thinc', email: 'thinc@cublood.org', password: 'thincandcublood', emailVerified: true },
+        function (err, user) {
+
+          console.log(user.id);
+          
+          Role.findOrCreate({
+            name: 'admin'
+          }, function(err, role) {
             //if (err) return console.log(err);
-            //console.log(principal);
+            //console.log(role);
+      
+            // Make Bob an admin
+            role.principals.create({
+              principalType: RoleMapping.USER,
+              principalId: user.id
+            }, function(err, principal) {
+              //if (err) return console.log(err);
+              //console.log(principal);
+            });
           });
-        });
-      }
-    );
+        }
+      );
+    })
   }
 
   //IMPORTANT: you need to delete thinc user and admin role in order to rerun
