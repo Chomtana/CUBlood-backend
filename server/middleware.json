@@ -52,10 +52,8 @@
     "strong-error-handler": {
           "params": {
         "debug": false,
-        "log": true,
-        "safeFields": [
-          "code"
-        ]
+        "log": false
+        
       }
     }
   }
