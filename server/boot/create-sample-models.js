@@ -91,7 +91,7 @@ module.exports = function(app) {
       var Role = app.models.Role;
       var RoleMapping = app.models.RoleMapping;
       User.findOrCreate(
-        { username: 'thinc', email: 'thinc@cublood.org', password: 'thincandcublood', emailVerified: true },
+        { username: 'thinc2', email: 'thinc2@cublood.org', password: 'thincandcublood', emailVerified: true, isAdmin: true, isApproved: true },
         function (err, user) {
 
           console.log(user.id);
